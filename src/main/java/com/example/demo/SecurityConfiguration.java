@@ -20,67 +20,69 @@ import org.springframework.util.AntPathMatcher;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
-   public static PasswordEncoder encoder(){
-      return new BCryptPasswordEncoder();
-        }
+    public static PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
+    }
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        //Restricts access to routes
+//        http.authorizeRequests()
+//                .antMatchers("/")
+//                .access("hasAnyAuthority('USER', 'ADMIN')")
+//                .antMatchers("/admin").access("hasAuthority('ADMIN')")
+//                .anyRequest().authenticated()
+//                .and()
+//                .formLogin().loginPage("/login").permitAll()
+//                .and()
+//                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+//                .logoutSuccessUrl("/login").permitAll()
+//                .and().httpBasic();
+//    }
+//        @Override
+//        protected void configure(AuthenticationManagerBuilder auth)throws Exception{
+//        auth.inMemoryAuthentication().
+//                withUser("dave").password(encoder().encode("password")).authorities("ADMIN").and().
+//                withUser("user").password(encoder().encode("password")).authorities("USER").and().passwordEncoder(encoder());
+//
+//        }
+
+    @Autowired
+    private SSUserDetailsService userDetailsService;
+    @Autowired
+    private UserRepository userRepository;
+
+    @Override
+    public UserDetailsService userDetailsServiceBean() throws Exception {
+        return new SSUserDetailsService(userRepository);
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //Restricts access to routes
-        http.authorizeRequests()
-                .antMatchers("/")
-                .access("hasAnyAuthority('USER', 'ADMIN')")
-                .antMatchers("/admin").access("hasAuthority('ADMIN')")
+        http
+                .authorizeRequests()
+                .antMatchers("/", "/h2-console/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").permitAll()
                 .and()
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login").permitAll()
-                .and().httpBasic();
+                .logout()
+                .logoutRequestMatcher(
+                        new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login").permitAll().permitAll()
+                .and()
+                .httpBasic();
+        http
+                .csrf().disable();
+        http
+                .headers().frameOptions().disable();
+
     }
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth)throws Exception{
-        auth.inMemoryAuthentication().
-                withUser("dave").password(encoder().encode("password")).authorities("ADMIN").and().
-                withUser("user").password(encoder().encode("password")).authorities("USER").and().passwordEncoder(encoder());
 
-        }
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth)
+            throws Exception {
+        auth
+                .userDetailsService(userDetailsServiceBean());
+    }
 
-//        @Autowired
-//    private SSUserDetailsService userDetailsService;
-//        @Autowired
-//    private UserRepository userRepository;
-//
-//        @Override
-//    public UserDetailsService userDetailsServiceBean() throws Exception {
-//            return new SSUserDetailsService(userRepository);
-//        }
-//        @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//            http
-//                    .authorizeRequests()
-//                    .antMatchers("/", "/h2-console/**").permitAll()
-//                    .anyRequest().authenticated()
-//                    .and()
-//                    .formLogin().loginPage("/login").permitAll()
-//                    .and()
-//                    .logout()
-//                    .logoutRequestMatcher(
-//                            new AntPathRequestMatcher("/logout"))
-//                    .logoutSuccessUrl("/login").permitAll().permitAll()
-//                    .and()
-//                    .httpBasic();
-//            http
-//                    .csrf().disable();
-//            http
-//                    .headers().frameOptions().disable();
-//
-//        }
-//        @Override
-//    protected void configure(AuthenticationManagerBuilder auth)
-//                throws Exception {
-//            auth
-//                    .userDetailsService(userDetailsServiceBean());
-        }
-
-
+}

@@ -1,22 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!--<html lang="en" xmlns:th="www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">-->
+<html lang="en">
 <head>
     <meta charset="UTF-8"/>
     <title>Title</title>
 </head>
 <body>
-<h2>It workes!</h2>
-<!--<div>-->
-<div sec:authorize="hasAuthority('ADMIN')">
-    Administrations will see this text. you can display a navbar here.
-</div>
+<!--<h2>It workes!</h2>-->
+<!--&lt;!&ndash;<div>&ndash;&gt;-->
+<!--<div sec:authorize="hasAuthority('ADMIN')">-->
+    <!--Administrations will see this text. you can display a navbar here.-->
+<!--</div>-->
 
-<div sec:authorize="hasAuthority('USER')">
-    Users will see this text. you can display a navbar here.
-</div>
-<p>
-    <a href="/logout">Logout</a>
-</p>
+<!--<div sec:authorize="hasAuthority('USER')">-->
+    <!--Users will see this text. you can display a navbar here.-->
+<!--</div>-->
+<!--<p>-->
+    <!--<a href="/logout">Logout</a>-->
+<!--</p>-->
 
+<h2>Insecure page</h2>
+<a href="/secure">Secure page</a>
 </body>
 </html>
