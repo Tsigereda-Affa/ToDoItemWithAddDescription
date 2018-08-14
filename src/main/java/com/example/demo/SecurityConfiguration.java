@@ -23,28 +23,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public static PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        //Restricts access to routes
-//        http.authorizeRequests()
-//                .antMatchers("/")
-//                .access("hasAnyAuthority('USER', 'ADMIN')")
-//                .antMatchers("/admin").access("hasAuthority('ADMIN')")
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin().loginPage("/login").permitAll()
-//                .and()
-//                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//                .logoutSuccessUrl("/login").permitAll()
-//                .and().httpBasic();
-//    }
-//        @Override
-//        protected void configure(AuthenticationManagerBuilder auth)throws Exception{
-//        auth.inMemoryAuthentication().
-//                withUser("dave").password(encoder().encode("password")).authorities("ADMIN").and().
-//                withUser("user").password(encoder().encode("password")).authorities("USER").and().passwordEncoder(encoder());
-//
-//        }
 
     @Autowired
     private SSUserDetailsService userDetailsService;
@@ -81,8 +59,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
-        auth
-                .userDetailsService(userDetailsServiceBean());
+        auth.userDetailsService(userDetailsServiceBean()).passwordEncoder(encoder());
     }
 
 }

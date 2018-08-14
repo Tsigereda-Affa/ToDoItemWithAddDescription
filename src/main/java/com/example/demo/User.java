@@ -1,6 +1,9 @@
 package com.example.demo;
 
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import javax.persistence.*;
 import java.util.Collection;
 
@@ -52,6 +55,10 @@ public class User {
     }
 
     public String getPassword() {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(password);
+        System.out.println(hashedPassword);
+        this.password = hashedPassword;
         return password;
     }
 
