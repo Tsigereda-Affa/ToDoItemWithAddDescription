@@ -55,10 +55,11 @@ public class User {
     }
 
     public String getPassword() {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String hashedPassword = passwordEncoder.encode(password);
-        System.out.println(hashedPassword);
-        this.password = hashedPassword;
+        // THIS IS COMMENTED OUT FOR L21 TO RETURN ONLY PASSWORD SINCE ....
+//        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//        String hashedPassword = passwordEncoder.encode(password);
+//        System.out.println(hashedPassword);
+//        this.password = hashedPassword;
         return password;
     }
 
