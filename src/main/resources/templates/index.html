@@ -1,25 +1,35 @@
 <!DOCTYPE html>
-<!--<html lang="en" xmlns:th="www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">-->
-<html lang="en">
+<html lang="en" xmlns:th="www.thymeleaf.org"
+      xmlns:sec="www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8"/>
     <title>Title</title>
 </head>
 <body>
-<!--<h2>It workes!</h2>-->
-<!--&lt;!&ndash;<div>&ndash;&gt;-->
-<!--<div sec:authorize="hasAuthority('ADMIN')">-->
-    <!--Administrations will see this text. you can display a navbar here.-->
-<!--</div>-->
-
-<!--<div sec:authorize="hasAuthority('USER')">-->
-    <!--Users will see this text. you can display a navbar here.-->
-<!--</div>-->
-<!--<p>-->
-    <!--<a href="/logout">Logout</a>-->
-<!--</p>-->
-
 <h2>Insecure page</h2>
+
+<div sec:authorize="isAuthenticated()">
+    This content is only shown to authenticated users.<br />
+
+    <div sec:authorize="hasAuthority('ROLE_ADMIN')" >
+        This content is only shown to administrators.
+    </div>
+
+    <div sec:authorize="hasAuthority('ROLE_USER')" >
+        This content is only shown to users.
+    </div>
+
+    Logged user: <span sec:authentication="name"> The value of the "name" property of the authentication object should appear here.</span><br />
+    Roles: <span sec:authentication="principal.authorities">
+    [ROLE_USER, ROLE_ADMIN]</span><br /><br />
+</div>
+<div sec:authorize="isAnonymous()">
+    This content is only show to anonymous users.
+</div>
+<a href="/login">Login</a>
+<a href="/logout">Logout</a>
+<a href="/register">Register</a>
 <a href="/secure">Secure page</a>
 </body>
 </html>
