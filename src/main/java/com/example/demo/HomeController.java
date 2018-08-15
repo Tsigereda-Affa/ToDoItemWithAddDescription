@@ -20,6 +20,9 @@ public class HomeController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    ToDoItemRepository toDoItemRepository;
+
     @RequestMapping(value="/register", method = RequestMethod.GET)
     public String showRegistrationPage(Model model){
         model.addAttribute("user", new User());
@@ -52,12 +55,22 @@ public class HomeController {
     @RequestMapping("/secure")
     public String secure(HttpServletRequest request,
                          Authentication authentication,
-                         Principal principal){
+                         Principal principal) {
         Boolean isAdmin = request.isUserInRole("ADMIN");
         Boolean isUser = request.isUserInRole("USER");
         UserDetails userDetails = (UserDetails)
-                                  authentication.getPrincipal();
-        String username =principal.getName();
+                authentication.getPrincipal();
+        String username = principal.getName();
         return "secure";
     }
-}
+
+        @RequestMapping("/toDoItem")
+                public String toDoItems(Model model){
+        //you have to Autowire it in the to to use the repo or any other page in here
+        model.addAttribute("toDoItems", toDoItemRepository.findAll());
+        return "list";
+        }
+
+    }
+
+

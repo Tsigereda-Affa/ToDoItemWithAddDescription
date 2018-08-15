@@ -16,6 +16,9 @@ public class DataLoader implements CommandLineRunner {
     RoleRepository roleRepository;
 
     @Autowired
+    ToDoItemRepository toDoItemRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
@@ -38,6 +41,8 @@ public class DataLoader implements CommandLineRunner {
         user.setRoles(Arrays.asList(userRole));
         userRepository.save(user);
 
+
+
         user = new User("admin@adm.com", "password", "Admin", "User", true, "admin");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Arrays.asList(adminRole));
@@ -48,6 +53,14 @@ public class DataLoader implements CommandLineRunner {
         user.setRoles(Arrays.asList(userRole,adminRole));
         userRepository.save(user);
 
+
+        ToDoItem todo = new ToDoItem();
+        //
+        todo.setUsername(user.getUsername());
+        todo.setDescription("This is an out door activity");
+
+        //what we put
+        toDoItemRepository.save(todo);
 
     }
 }
