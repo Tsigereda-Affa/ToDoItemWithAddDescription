@@ -2,13 +2,12 @@ package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -22,6 +21,9 @@ public class HomeController {
 
     @Autowired
     ToDoItemRepository toDoItemRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @RequestMapping(value="/register", method = RequestMethod.GET)
     public String showRegistrationPage(Model model){
@@ -70,6 +72,47 @@ public class HomeController {
         model.addAttribute("toDoItems", toDoItemRepository.findAll());
         return "list";
         }
+
+//    @RequestMapping("/addToDoItem")
+//    public String searchByName(Model model) {
+//        String username = getUser().getUsername();
+//        model.addAttribute("user", toDoItemRepository.findByUsername(username));
+//        return "descriptionForm";
+//
+//    }
+    private User getUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentusername = authentication.getName();
+        User user = userRepository.findByUsername(currentusername);
+        return user;
+    }
+//    @PostMapping("/processToDoItem")
+//
+//    private String  processForm(Model model){
+//        @PostMapping("/process")
+//        public String processForm(@Valid Job job, BindingResult result){
+//            if (result.hasErrors()){
+//                return "jobform";
+//            }
+//            jobRepository.save(job);
+//            return "redirect:/";
+@RequestMapping(value="/addToDoItem", method = RequestMethod.GET)
+public String showToDoItem(Model model){
+    model.addAttribute("toDoItem", new ToDoItem());
+    return "descriptionform";
+}
+    @RequestMapping(value="/addToDoItem", method = RequestMethod.POST)
+    public String processDescriptionPage(
+            @Valid @ModelAttribute("toDoItem") ToDoItem toDoItem,
+            BindingResult result,
+            Model model) {
+           String username = getUser().getUsername();
+           toDoItemRepository.save(toDoItem);
+        model.addAttribute("toDoItem", toDoItemRepository.findByUsername(username));
+        return "list";
+
+    }
+
 
     }
 
