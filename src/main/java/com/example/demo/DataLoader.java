@@ -54,13 +54,13 @@ public class DataLoader implements CommandLineRunner {
         userRepository.save(user);
 
 
-        ToDoItem todo = new ToDoItem();
-        //
-        todo.setUsername(user.getUsername());
-        todo.setDescription("This is an out door activity");
-
-        //what we put
-        toDoItemRepository.save(todo);
+//        ToDoItem todo = new ToDoItem();
+//        //
+//        todo.setUsername(user.getUsername());
+//        todo.setDescription("Running 4 mil");
+//
+//        //what we put
+//        toDoItemRepository.save(todo);
 
     }
 }

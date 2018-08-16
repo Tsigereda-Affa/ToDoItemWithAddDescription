@@ -97,18 +97,19 @@ public class HomeController {
 //            jobRepository.save(job);
 //            return "redirect:/";
 @RequestMapping(value="/addToDoItem", method = RequestMethod.GET)
-public String showToDoItem(Model model){
+public String showToDoItem( Model model){
     model.addAttribute("toDoItem", new ToDoItem());
     return "descriptionform";
 }
-    @RequestMapping(value="/addToDoItem", method = RequestMethod.POST)
+    @PostMapping("/processToDoItem")
     public String processDescriptionPage(
-            @Valid @ModelAttribute("toDoItem") ToDoItem toDoItem,
+             @ModelAttribute ToDoItem toDoItem,
             BindingResult result,
             Model model) {
            String username = getUser().getUsername();
+           toDoItem.setUsername(username);
            toDoItemRepository.save(toDoItem);
-        model.addAttribute("toDoItem", toDoItemRepository.findByUsername(username));
+        model.addAttribute("toDoItems", toDoItemRepository.findByUsername(username));
         return "list";
 
     }

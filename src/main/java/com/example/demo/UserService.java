@@ -18,6 +18,9 @@ public class UserService {
     RoleRepository roleRepository;
 
     @Autowired
+    ToDoItemRepository toDoItemRepository;
+
+    @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -46,4 +49,10 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
-}
+//    public void saveToDoItem(User user){
+//        user.setToDoItems(Arrays.asList(toDoItemRepository.findByUsername("ADMIN")));
+//        user.setEnabled(true);
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        toDoItemRepository.save(user);
+    }
+
