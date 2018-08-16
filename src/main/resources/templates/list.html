@@ -10,7 +10,7 @@
 <tr>
     <th>User Name</th>
     <th>Description</th>
-
+    <th>Actions</th>
     <a href="/addToDoItem" >Add Item</a>
 
 
@@ -21,10 +21,16 @@
 <tr th:each="toDoItem :${toDoItems}">
     <td th:text="${toDoItem.username}"></td>
     <td th:text="${toDoItem.description}"></td>
+    <td>
+        <a th:href="@{/update/{id}(id=${toDoItem.id})}">Update</a>
 
+    </td>
 
 </tr>
 </table>
+<br/>
+
+<a href="/logout">Logout</a>
 
 </body>
 </html>

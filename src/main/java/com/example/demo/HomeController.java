@@ -113,6 +113,11 @@ public String showToDoItem( Model model){
         return "list";
 
     }
+    @RequestMapping("/update/{id}")
+    public String updateToDoItems(@PathVariable("id") long id, Model model){
+        model.addAttribute("toDoItem", toDoItemRepository.findById(id));
+        return "descriptionform";
+    }
 
 
     }

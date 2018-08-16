@@ -7,7 +7,7 @@
 </head>
 <body>
 <form action="#" th:action="@{/processToDoItem}" th:object="${toDoItem}" method="post">
-
+    <input type="hidden" th:field="*{id}" />
     Description :<textarea rows="3" th:field="*{description}" />
     <span th:if="${#fields.hasErrors('description')}"
           th:errors="*{description}"></span>
